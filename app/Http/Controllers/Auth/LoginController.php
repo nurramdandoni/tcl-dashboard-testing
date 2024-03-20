@@ -27,8 +27,10 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             // Jika login berhasil, set pesan sukses
             Session::flash('success', 'Login successful!');
+            // Menyetel nilai session
+            session(['status_login' => 'true']);
             // Jika autentikasi berhasil, redirect ke halaman beranda
-            return redirect()->intended('/home');
+            return redirect()->intended('/dashboard');
         }else{
 
             // Jika autentikasi gagal, kembali ke halaman login dengan pesan error

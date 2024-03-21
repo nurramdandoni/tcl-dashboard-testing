@@ -40,4 +40,11 @@ class LoginController extends Controller
         }
 
     }
+
+    public function logout(Request $request){
+        // session(['status_login' => 'false']);
+        $request->session()->forget('status_login');
+            // Jika autentikasi berhasil, redirect ke halaman beranda
+            return redirect()->intended('/dashboard');
+    }
 }

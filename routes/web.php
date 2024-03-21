@@ -13,4 +13,5 @@ Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/dashboard', [DashboardController::class, 'dashboard']);
+Route::post('/dataBar', [DashboardController::class, 'getdataBarChart']);
 

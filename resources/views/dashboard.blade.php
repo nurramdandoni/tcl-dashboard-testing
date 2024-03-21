@@ -14,7 +14,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 200;
-    font-size:20px;
+    font-size:15px;
 }
 </style>
 <!-- Page Heading -->
@@ -148,6 +148,12 @@
 </div>
 <!-- /.container-fluid -->
 <script>
+    var status_ok_data =[];
+    var status_lower_data=[];
+    var status_higher_data =[];
+
+    var batas_atas_thresh = 0;
+    var batas_bawah_thresh = 0;
     $(document).ready(function() {
         // Buat objek tanggal baru
         var today = new Date();
@@ -166,6 +172,8 @@
         $("#pilihChamber").val(1);
         $("#pilihClient").val(1);
         $("#showDynamic").click();
+
+        
         // // Panggil AJAX di sini
         // $.ajax({
         //     url: '/dataBar',
@@ -442,8 +450,7 @@ $("#showDynamic").click(function(){
             var tbl ='';
             var list_time = [];
             var list_temp = [];
-            var batas_atas_thresh = 0;
-            var batas_bawah_thresh = 0;
+            
             if(response.length > 0){
                 batas_atas_thresh = response[0].client.batas_atas;
                 batas_bawah_thresh = response[0].client.batas_bawah;
@@ -593,11 +600,8 @@ $("#showDynamic").click(function(){
             myLineChart.update();
 
             var status_ok =0;
-            var status_ok_data =[];
             var status_lower=0;
-            var status_lower_data=[];
             var status_higher =0;
-            var status_higher_data =[];
             var persentase_ok = 0
             
             $.each(response, function(key2, val2){
@@ -618,7 +622,7 @@ $("#showDynamic").click(function(){
             persentase_ok = (status_ok/response.length)*100;
             console.log("presentase ok : ",persentase_ok);
             var warna = [];
-            $("#presentase").text(persentase_ok.toFixed(2)+'%');
+            $("#presentase").text('OK : '+persentase_ok.toFixed(2)+'%');
             if(persentase_ok > 96){
                 var warna = ['#59df4e', '#59df4e', '#59df4e'];
             }else{
@@ -673,13 +677,20 @@ $("#showDynamic").click(function(){
 
                     // Tampilkan data
                     console.log("Data Label: " + dataLabel);
+                    $("#DetailChamberModal").modal('show');
                     console.log("Data Value: " + dataValue);
                         if(dataLabel == "OK"){
                             console.log(status_ok_data);
+                            $("#categoryChamber").text("OK");
+                            infoChamber("OK");
                         }else if(dataLabel == "HIGHER"){
                             console.log(status_higher_data);
+                            $("#categoryChamber").text("HIGHER");
+                            infoChamber("HIGHER");
                         }else if(dataLabel == "LOWER"){
                             console.log(status_lower_data);
+                            $("#categoryChamber").text("LOWER");
+                            infoChamber("LOWER");
                         }
                     }
                 },
@@ -693,5 +704,113 @@ $("#showDynamic").click(function(){
         }
     });
 });
+
+function infoChamber(id){
+    var tempDataChamber = [];
+    var idDataChamber = [];
+    console.log(id);
+    console.log(batas_atas_thresh);
+    console.log(batas_bawah_thresh);
+    var dataObjectInfo;
+    if(id == "OK"){
+        dataObjectInfo = status_ok_data;
+    }else if(id == "HIGHER"){
+        dataObjectInfo = status_higher_data;
+    }else if(id == "LOWER"){
+        dataObjectInfo = status_lower_data;
+    }
+    console.log(dataObjectInfo);
+    $.each(dataObjectInfo, function(key3, val3){
+        console.log(val3);
+        idDataChamber.push(val3.created_at)
+        tempDataChamber.push(val3.temperature_data)
+    });
+    console.log(tempDataChamber);
+    // Bar Chart Example
+    var ctx = document.getElementById("myBarChart");
+    var myBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        // labels: ["January", "February", "March", "April", "May", "June"],
+        labels: idDataChamber,
+        datasets: [{
+        label: "Temperature",
+        backgroundColor: "#4e73df",
+        hoverBackgroundColor: "#2e59d9",
+        borderColor: "#4e73df",
+        // data: [4215, 5312, 6251, 7841, 9821, 14984],
+        data: tempDataChamber,
+        }],
+    },
+    options: {
+        maintainAspectRatio: false,
+        layout: {
+        padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
+        }
+        },
+        scales: {
+        xAxes: [{
+            // time: {
+            // unit: 'month'
+            // },
+            gridLines: {
+            display: false,
+            drawBorder: false
+            },
+            ticks: {
+            maxTicksLimit: 6
+            },
+            maxBarThickness: 25,
+        }],
+        yAxes: [{
+            ticks: {
+            min: -30,
+            max: 0,
+            maxTicksLimit: 5,
+            padding: 10,
+            // Include a dollar sign in the ticks
+            callback: function(value, index, values) {
+                return value;
+            }
+            },
+            gridLines: {
+            color: "rgb(234, 236, 244)",
+            zeroLineColor: "rgb(234, 236, 244)",
+            drawBorder: false,
+            borderDash: [2],
+            zeroLineBorderDash: [2]
+            }
+        }],
+        },
+        legend: {
+        display: false
+        },
+        tooltips: {
+        titleMarginBottom: 10,
+        titleFontColor: '#6e707e',
+        titleFontSize: 14,
+        backgroundColor: "rgb(255,255,255)",
+        bodyFontColor: "#858796",
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        xPadding: 15,
+        yPadding: 15,
+        displayColors: false,
+        caretPadding: 10,
+        callbacks: {
+            label: function(tooltipItem, chart) {
+            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+            return datasetLabel + ': ' +tooltipItem.yLabel+'°C';
+            }
+        }
+        },
+    }
+    });
+    myBarChart.update()
+}
 </script>
 @endsection

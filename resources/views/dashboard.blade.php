@@ -87,6 +87,42 @@
             </div>
         </div>
     </div>
+    <div class="col-xl-12 col-lg-5">
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Tabel History Data Client ::: <span id="cln"></span></h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:center;">ID Chamber</th>
+                                            <th>Nama Chamber</th>
+                                            <th style="text-align:center;">Temperature</th>
+                                            <th style="text-align:center;">Batas Atas</th>
+                                            <th style="text-align:center;">Batas Bawah</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th style="text-align:center;">ID Chamber</th>
+                                            <th>Nama Chamber</th>
+                                            <th style="text-align:center;">Temperature</th>
+                                            <th style="text-align:center;">Batas Atas</th>
+                                            <th style="text-align:center;">Batas Bawah</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody id="dtTabel">
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+
 </div>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 </div>
@@ -117,12 +153,27 @@
                 _token: $('meta[name="csrf-token"]').attr('content') // Menyertakan token CSRF
             },
             success: function(response) {
+                var tbl ='';
                 var list_time = [];
                 var list_temp = [];
-                var batas_atas_thresh = response[0].client.batas_atas;
-                var batas_bawah_thresh = response[0].client.batas_bawah;
+                var batas_atas_thresh = 0;
+                var batas_bawah_thresh = 0;
+                if(response.length > 0){
+                    batas_atas_thresh = response[0].client.batas_atas;
+                    batas_bawah_thresh = response[0].client.batas_bawah;
+                    $("#cln").text(response[0].client.nama_client);
+
+                }
                 // console.log(response[0]);
                 $.each(response, function(key, val){
+
+                    tbl +=`<tr>
+                                <td style="text-align:center;">`+val.chamber.id_chamber+`</td>
+                                <td>`+val.chamber.nama_chamber+`</td>
+                                <td style="text-align:center;">`+val.temperature_data+`°C</td>
+                                <td style="text-align:center;">`+val.client.batas_atas+`°C</td>
+                                <td style="text-align:center;">`+val.client.batas_bawah+`°C</td>
+                            </tr>`;
                     // console.log(val.created_at);
                     var tempTime = val.created_at;
                     var spliting = tempTime.split('T');
@@ -131,6 +182,8 @@
                     list_time.push(timeData);
                     list_temp.push(val.temperature_data);
                 })
+                $("#dtTabel").html(tbl);
+                
                 console.log(list_time);
                 console.log(list_temp);
                 // Tambahkan logika untuk menangani data dari response AJAX di sini

@@ -593,8 +593,11 @@ $("#showDynamic").click(function(){
             myLineChart.update();
 
             var status_ok =0;
+            var status_ok_data =[];
             var status_lower=0;
+            var status_lower_data=[];
             var status_higher =0;
+            var status_higher_data =[];
             var persentase_ok = 0
             
             $.each(response, function(key2, val2){
@@ -602,10 +605,13 @@ $("#showDynamic").click(function(){
                 // console.log(val2.temperature_data);
                 if(val2.temperature_data < val2.client.batas_atas){
                     status_higher++;
+                    status_higher_data.push(val2);
                 }else if(val2.temperature_data > val2.client.batas_bawah){
                     status_lower++;
+                    status_lower_data.push(val2);
                 }else{
                     status_ok++
+                    status_ok_data.push(val2);
                 }
             });
             console.log("total data : ",response.length);
@@ -668,6 +674,13 @@ $("#showDynamic").click(function(){
                     // Tampilkan data
                     console.log("Data Label: " + dataLabel);
                     console.log("Data Value: " + dataValue);
+                        if(dataLabel == "OK"){
+                            console.log(status_ok_data);
+                        }else if(dataLabel == "HIGHER"){
+                            console.log(status_higher_data);
+                        }else if(dataLabel == "LOWER"){
+                            console.log(status_lower_data);
+                        }
                     }
                 },
             },

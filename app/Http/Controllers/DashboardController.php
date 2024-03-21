@@ -21,10 +21,11 @@ class DashboardController extends Controller
     }
     public function getdataBarChart(Request $request){
         // Dapatkan data dari request POST
+        $chamberId = $request->input('chamber_id');
         $clientId = $request->input('client_id');
         $tanggal = $request->input('tanggal');
 
-        $temperatureDatas = TemperatureData::where('created_at','like',$tanggal)->where('id_client', $clientId)->with('chamber', 'client')->get();
+        $temperatureDatas = TemperatureData::where('created_at','like',$tanggal)->where('id_chamber', $chamberId)->where('id_client', $clientId)->with('chamber', 'client')->get();
         echo json_encode($temperatureDatas);
     }
 }

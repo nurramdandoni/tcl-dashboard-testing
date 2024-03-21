@@ -112,6 +112,7 @@
             dataType: 'json',
             data:{
                 tanggal:formattedDate+'%',
+                chamber_id:'1',
                 client_id:'1',
                 _token: $('meta[name="csrf-token"]').attr('content') // Menyertakan token CSRF
             },
@@ -271,7 +272,7 @@
                 persentase_ok = (status_ok/response.length)*100;
                 console.log("presentase ok : ",persentase_ok);
                 var warna = [];
-                $("#presentase").text(persentase_ok+'%');
+                $("#presentase").text(persentase_ok.toFixed(2)+'%');
                 if(persentase_ok > 96){
                     var warna = ['#59df4e', '#59df4e', '#59df4e'];
                 }else{

@@ -45,38 +45,38 @@
                                         <h1 class="h4 text-gray-900 mb-4">Welcome!</h1>
                                     </div>
                                     <form class="user" method="POST" action="{{ route('login') }}">
-    @csrf
-    <div class="form-group">
+        @csrf
+        <div class="form-group">
         <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" aria-describedby="emailHelp" placeholder="Enter Email Address...">
-    </div>
-    <div class="form-group">
+        </div>
+        <div class="form-group">
         <input type="password" class="form-control form-control-user" id="exampleInputPassword" name="password" placeholder="Password">
-    </div>
-    <div class="form-group">
+        </div>
+        <div class="form-group">
         <div class="custom-control custom-checkbox small">
             <input type="checkbox" class="custom-control-input" id="customCheck" name="remember">
             <label class="custom-control-label" for="customCheck">Remember Me</label>
         </div>
-    </div>
-    <button type="submit" class="btn btn-primary btn-user btn-block">{{ __('Login') }}</button>
-</form>
+        </div>
+        <button type="submit" class="btn btn-primary btn-user btn-block">{{ __('Login') }}</button>
+        </form>
 
-<hr>
-<div class="text-center">
-    <a class="small" href="forgot-password.html">Forgot Password?</a>
-    @if ($errors->any())
-    <div class="alert alert-danger mt-3">
+        <hr>
+        <div class="text-center">
+        <a class="small" href="forgot-password.html">Forgot Password?</a>
+        @if ($errors->any())
+        <div class="alert alert-danger mt-3">
         @foreach ($errors->all() as $error)
             <div>{{ $error }}</div>
         @endforeach
-    </div>
-@endif
+        </div>
+        @endif
 
-    @if(Session::has('success'))
-    <div class="alert alert-success mt-3">
-        {{ Session::get('success') }}
-    </div>
-@endif
+        @if(Session::has('success'))
+        <div class="alert alert-success mt-3">
+            {{ Session::get('success') }}
+        </div>
+        @endif
                                     </div>
                                     <!-- <div class="text-center">
                                         <a class="small" href="register.html">Create an Account!</a>

@@ -31,6 +31,7 @@
     <!-- Page level plugins -->
     <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
     <script src="{{ asset('vendor/chart.js/chartjs-plugin-annotation-0.5.7/chartjs-plugin-annotation.min.js') }}"></script>
+    <script src="{{ asset('vendor/chart.js/chartjs-plugin-datalabels@2.0.0.js') }}"></script>
 
 </head>
 

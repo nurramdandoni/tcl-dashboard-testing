@@ -7,7 +7,16 @@
 @section('content')
      <!-- Begin Page Content -->
      <div class="container-fluid">
-
+<style>
+    .center-text {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+    font-size:20px;
+}
+</style>
 <!-- Page Heading -->
 <h1 class="h3 mb-2 text-gray-800">Summary Data</h1>
 <p class="mb-4">Berikut adalah Data History dan Status Chamber pada Client Tertentu pada Tanggal yang dipilih.</p>
@@ -63,8 +72,9 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-                <div class="chart-pie pt-4">
+                <div class="chart-pie pt-4 ct">
                     <canvas id="myPieChart"></canvas>
+                    <span id="presentase" class="center-text">%</span>
                 </div>
                 <hr>
                 Data dan Warna Berdasarkan Total Status 'OK' pada semua chamber
@@ -261,6 +271,7 @@
                 persentase_ok = (status_ok/response.length)*100;
                 console.log("presentase ok : ",persentase_ok);
                 var warna = [];
+                $("#presentase").text(persentase_ok+'%');
                 if(persentase_ok > 96){
                     var warna = ['#59df4e', '#59df4e', '#59df4e'];
                 }else{
@@ -316,8 +327,8 @@
                         // Tampilkan data
                         console.log("Data Label: " + dataLabel);
                         console.log("Data Value: " + dataValue);
-                    }
-                    }
+                        }
+                    },
                 },
                 });
 

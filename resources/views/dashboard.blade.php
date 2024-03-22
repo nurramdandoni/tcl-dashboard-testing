@@ -603,6 +603,10 @@ $("#showDynamic").click(function(){
             var status_lower=0;
             var status_higher =0;
             var persentase_ok = 0
+
+            status_higher_data = [];
+            status_lower_data = [];
+            status_ok_data = [];
             
             $.each(response, function(key2, val2){
                 // console.log(val2.client.batas_atas);

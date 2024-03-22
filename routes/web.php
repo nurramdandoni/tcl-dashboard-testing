@@ -15,4 +15,5 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/dashboard', [DashboardController::class, 'dashboard']);
 Route::post('/dataBar', [DashboardController::class, 'getdataBarChart']);
+Route::get('/dataTgl', [DashboardController::class, 'getdataTanggal']);
 
